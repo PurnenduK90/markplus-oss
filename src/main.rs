@@ -1,4 +1,6 @@
+mod compile_cmd;
 mod core_cmd;
+mod render_cmd;
 
 use clap::{Parser, Subcommand};
 
@@ -15,8 +17,13 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// MarkPlus Core CLI operations
+    /// Parse a Markdown file and emit its AST as JSON
     Core(core_cmd::CoreArgs),
+    /// Render a Markdown file to HTML, Typst source, or PDF
+    Render(render_cmd::RenderArgs),
+    /// Parse and render in one step — output format inferred from file extension
+    /// (.json → AST, .html → HTML, .typ → Typst source, .pdf → PDF)
+    Compile(compile_cmd::CompileArgs),
 }
 
 fn main() {
@@ -24,5 +31,7 @@ fn main() {
 
     match &cli.command {
         Commands::Core(args) => core_cmd::run(args),
+        Commands::Render(args) => render_cmd::run(args),
+        Commands::Compile(args) => compile_cmd::run(args),
     }
 }

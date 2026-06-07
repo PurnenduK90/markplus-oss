@@ -2,6 +2,17 @@ use clap::Args;
 use markplus_core::parse_document;
 use std::{fs, process};
 
+/// Arguments for the `core` subcommand.
+///
+/// Parses a Markdown file and emits the full MarkPlus AST as JSON to stdout.
+///
+/// # Examples
+///
+/// ```bash
+/// markplus-oss core document.md
+/// markplus-oss core --pretty document.md
+/// ```
+
 #[derive(Args)]
 pub struct CoreArgs {
     /// Input Markdown file
