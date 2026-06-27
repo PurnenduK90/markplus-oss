@@ -76,11 +76,10 @@ pub fn process_tabs(
             .to_string();
 
         let path = resolver.resolve(file)?;
-        let content =
-            std::fs::read_to_string(&path).map_err(|e| IncludeError::Io {
-                path: path.clone(),
-                source: e,
-            })?;
+        let content = std::fs::read_to_string(&path).map_err(|e| IncludeError::Io {
+            path: path.clone(),
+            source: e,
+        })?;
 
         let inner_asset =
             markplus_core::parse_document(&content).map_err(|e| IncludeError::MarkdownParse {
@@ -113,6 +112,7 @@ mod tests {
     use super::*;
     use serde_json::json;
     use std::fs;
+    use std::path::Path;
 
     fn make_resolver(tmp: &Path) -> PathResolver {
         let article = tmp.join("article.md");
@@ -141,7 +141,8 @@ mod tests {
         let overview = tmp.path().join("overview.md");
         fs::write(&overview, "# Overview\n\nOverview content.\n").unwrap();
 
-        let mut ast = vec![json!({"t": "heading", "level": 1, "children": [{"t": "text", "text": "Main"}]})];
+        let mut ast =
+            vec![json!({"t": "heading", "level": 1, "children": [{"t": "text", "text": "Main"}]})];
         let mut meta = Some(json!({
             "title": "Guide",
             "tabs": [

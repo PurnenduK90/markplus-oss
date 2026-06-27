@@ -1,3 +1,7 @@
+//! MarkPlus CLI Workspace
+//!
+//! This crate provides the main command-line interface for compiling, validating, and rendering
+//! MarkPlus assets.
 mod compile_cmd;
 mod core_cmd;
 mod render_cmd;
@@ -5,7 +9,7 @@ mod render_cmd;
 use clap::{Parser, Subcommand};
 
 /// MarkPlus Community CLI
-/// 
+///
 /// The community version of everything MarkPlus has to offer.
 #[derive(Parser)]
 #[command(name = "markplus-oss")]

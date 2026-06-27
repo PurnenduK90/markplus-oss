@@ -58,7 +58,10 @@ pub fn run(args: &RenderArgs) {
         .with_templates(Path::new(&args.templates_dir))
         .build()
         .unwrap_or_else(|e| {
-            eprintln!("markplus render: failed to load templates from '{}': {e}", args.templates_dir);
+            eprintln!(
+                "markplus render: failed to load templates from '{}': {e}",
+                args.templates_dir
+            );
             process::exit(1);
         });
 

@@ -1,7 +1,7 @@
 //! Code file include handler — delegates to `markplus_core::read_code_as_fenced_ast`.
 
-use std::path::Path;
 use serde_json::Value;
+use std::path::Path;
 
 use crate::error::IncludeError;
 
@@ -9,7 +9,7 @@ use crate::error::IncludeError;
 pub fn handle_code_include(path: &Path) -> Result<Vec<Value>, IncludeError> {
     let node = markplus_core::read_code_as_fenced_ast(path).map_err(|msg| IncludeError::Io {
         path: path.to_path_buf(),
-        source: std::io::Error::new(std::io::ErrorKind::Other, msg),
+        source: std::io::Error::other(msg),
     })?;
     Ok(vec![node])
 }

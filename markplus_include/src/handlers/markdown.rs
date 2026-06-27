@@ -1,8 +1,8 @@
 //! Markdown include handler — uses `markplus_core::parse_document` to parse
 //! the included `.md` file and merges its frontmatter into the parent.
 
-use std::path::Path;
 use serde_json::Value;
+use std::path::Path;
 
 use crate::error::IncludeError;
 use crate::frontmatter::merge_frontmatter;

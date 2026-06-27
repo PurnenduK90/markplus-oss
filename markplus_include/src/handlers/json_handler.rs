@@ -1,7 +1,7 @@
 //! JSON data include handler — delegates to `markplus_core::read_json_data_as_ast`.
 
-use std::path::Path;
 use serde_json::Value;
+use std::path::Path;
 
 use crate::error::IncludeError;
 
@@ -14,7 +14,8 @@ use crate::error::IncludeError;
 pub fn handle_json_include(path: &Path) -> Result<Vec<Value>, IncludeError> {
     markplus_core::read_json_data_as_ast(path).map_err(|msg| {
         // Try to determine if it was a parse error or IO error
-        if msg.contains("No such file") || msg.contains("cannot find") || msg.contains("not found") {
+        if msg.contains("No such file") || msg.contains("cannot find") || msg.contains("not found")
+        {
             IncludeError::Io {
                 path: path.to_path_buf(),
                 source: std::io::Error::new(std::io::ErrorKind::NotFound, msg),

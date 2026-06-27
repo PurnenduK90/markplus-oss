@@ -1,7 +1,7 @@
 //! Mermaid include handler — delegates to `markplus_core::mermaid`.
 
-use std::path::Path;
 use serde_json::{Map, Value};
+use std::path::Path;
 
 use crate::error::IncludeError;
 
@@ -13,13 +13,12 @@ pub fn handle_mermaid_include(
     path: &Path,
     attrs: &Map<String, Value>,
 ) -> Result<Vec<Value>, IncludeError> {
-    let node =
-        markplus_core::mermaid::read_mermaid_as_fenced_ast_with_attrs(path, attrs).map_err(
-            |msg| IncludeError::Io {
-                path: path.to_path_buf(),
-                source: std::io::Error::new(std::io::ErrorKind::Other, msg),
-            },
-        )?;
+    let node = markplus_core::mermaid::read_mermaid_as_fenced_ast_with_attrs(path, attrs).map_err(
+        |msg| IncludeError::Io {
+            path: path.to_path_buf(),
+            source: std::io::Error::other(msg),
+        },
+    )?;
     Ok(vec![node])
 }
 

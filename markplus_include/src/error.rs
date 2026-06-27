@@ -10,21 +10,35 @@ pub enum IncludeError {
 
     /// An I/O error occurred while reading a file.
     Io {
+        /// The path to the file that caused the I/O error.
         path: PathBuf,
+        /// The underlying standard I/O error.
         source: std::io::Error,
     },
 
     /// A CSV file could not be parsed.
-    CsvParse { path: PathBuf, message: String },
+    CsvParse {
+        /// The path to the CSV file.
+        path: PathBuf,
+        /// The parser error message.
+        message: String,
+    },
 
     /// A JSON file could not be parsed.
     JsonParse {
+        /// The path to the JSON file.
         path: PathBuf,
+        /// The underlying serde JSON error.
         source: serde_json::Error,
     },
 
     /// An included Markdown file failed to parse via `markplus_core`.
-    MarkdownParse { path: PathBuf, message: String },
+    MarkdownParse {
+        /// The path to the Markdown file.
+        path: PathBuf,
+        /// The parser error message.
+        message: String,
+    },
 
     /// The include fenced block is missing the required `src` attribute.
     MissingSrc,

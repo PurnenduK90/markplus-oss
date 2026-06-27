@@ -90,8 +90,7 @@ fn process_ast_includes(
             // included content (using the included file's directory as base).
             let ext = path.extension().and_then(|e| e.to_str()).unwrap_or("");
             if ext == "md" || ext == "markdown" {
-                let inner_resolver =
-                    PathResolver::new(&path, resolver.config_root());
+                let inner_resolver = PathResolver::new(&path, resolver.config_root());
                 process_ast_includes(&mut replacement, meta, &inner_resolver, seen)?;
             }
 
@@ -215,11 +214,7 @@ mod tests {
 
         // outer.md includes inner.md
         let outer = tmp.path().join("outer.md");
-        fs::write(
-            &outer,
-            "# Outer\n\n```include\nsrc=inner.md\n```\n",
-        )
-        .unwrap();
+        fs::write(&outer, "# Outer\n\n```include\nsrc=inner.md\n```\n").unwrap();
         let inner = tmp.path().join("inner.md");
         fs::write(&inner, "## Inner\n").unwrap();
 
@@ -228,14 +223,12 @@ mod tests {
         let resolver = PathResolver::new(&article, None);
         let mut asset = SiteAsset::new(
             None,
-            vec![json!({"t": "fenced", "name": "include", "attrs": {"src": "outer.md"}, "raw": ""})],
+            vec![
+                json!({"t": "fenced", "name": "include", "attrs": {"src": "outer.md"}, "raw": ""}),
+            ],
         );
         // Write outer.md as markdown that the handler will parse
-        fs::write(
-            &outer,
-            "# Outer Heading\n",
-        )
-        .unwrap();
+        fs::write(&outer, "# Outer Heading\n").unwrap();
         process_includes(&mut asset, &resolver).unwrap();
         assert!(asset.ast.iter().any(|n| n["t"] == "heading"));
     }
@@ -264,7 +257,7 @@ mod tests {
         // So circular detection only triggers when the markdown content
         // itself contains include fenced blocks. Let's test with JSON:
         // Actually the simplest test is to have include → same file:
-        let mut asset = SiteAsset::new(
+        let _asset = SiteAsset::new(
             None,
             vec![json!({"t": "fenced", "name": "include", "attrs": {"src": "a.md"}, "raw": ""})],
         );
@@ -285,7 +278,8 @@ mod tests {
         let path = a.canonicalize().unwrap();
         seen.insert(path.clone());
         // Trying to include a.md when it's already in seen:
-        let mut ast = vec![json!({"t": "fenced", "name": "include", "attrs": {"src": "a.md"}, "raw": ""})];
+        let mut ast =
+            vec![json!({"t": "fenced", "name": "include", "attrs": {"src": "a.md"}, "raw": ""})];
         let result = process_ast_includes(&mut ast, &mut None, &resolver, &mut seen);
         assert!(matches!(result, Err(IncludeError::CircularInclude(_))));
     }
@@ -327,7 +321,9 @@ mod tests {
 
     #[test]
     fn is_include_node_detection() {
-        assert!(is_include_node(&json!({"t": "fenced", "name": "include", "attrs": {"src": "x"}})));
+        assert!(is_include_node(
+            &json!({"t": "fenced", "name": "include", "attrs": {"src": "x"}})
+        ));
         assert!(!is_include_node(&json!({"t": "fenced", "name": "python"})));
         assert!(!is_include_node(&json!({"t": "heading"})));
     }

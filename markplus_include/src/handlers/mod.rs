@@ -1,20 +1,20 @@
 //! File-type handlers — dispatch an include to the right parser.
 
-mod markdown;
+mod code;
 mod csv_handler;
 mod json_handler;
-mod code;
+mod markdown;
 mod mermaid;
 pub mod tabs;
 
-pub use markdown::handle_markdown_include;
+pub use code::handle_code_include;
 pub use csv_handler::handle_csv_include;
 pub use json_handler::handle_json_include;
-pub use code::handle_code_include;
+pub use markdown::handle_markdown_include;
 pub use mermaid::handle_mermaid_include;
 
-use std::path::Path;
 use serde_json::Value;
+use std::path::Path;
 
 use crate::error::IncludeError;
 
@@ -27,19 +27,14 @@ pub fn dispatch_include(
     attrs: &serde_json::Map<String, Value>,
     meta: &mut Option<Value>,
 ) -> Result<Vec<Value>, IncludeError> {
-    let ext = path
-        .extension()
-        .and_then(|e| e.to_str())
-        .unwrap_or("");
+    let ext = path.extension().and_then(|e| e.to_str()).unwrap_or("");
 
     match ext {
         "md" | "markdown" => handle_markdown_include(path, meta),
         "csv" => handle_csv_include(path),
         "json" => handle_json_include(path),
         "mmd" | "mermaid" => handle_mermaid_include(path, attrs),
-        _ if markplus_core::is_known_code_extension(ext) => {
-            handle_code_include(path)
-        }
+        _ if markplus_core::is_known_code_extension(ext) => handle_code_include(path),
         _ => Err(IncludeError::UnsupportedExtension(ext.to_string())),
     }
 }
@@ -47,7 +42,7 @@ pub fn dispatch_include(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use serde_json::{json, Map};
+    use serde_json::Map;
     use std::fs;
 
     #[test]

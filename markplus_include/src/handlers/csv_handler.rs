@@ -1,7 +1,7 @@
 //! CSV include handler — delegates to `markplus_core::read_csv_as_table_ast`.
 
-use std::path::Path;
 use serde_json::Value;
+use std::path::Path;
 
 use crate::error::IncludeError;
 
