@@ -1,0 +1,16 @@
+[package]
+name = "markplus_include"
+version = "0.1.0"
+edition = "2021"
+authors = ["Purnendu Kumar <purnendu@kumargaur.com>"]
+description = "Include/embed processor for the MarkPlus ecosystem — resolves file includes, CSV/JSON data, tabs, and mermaid diagrams into the AST"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/markplus/markplus-oss"
+
+[dependencies]
+markplus_core = { path = "../../markplus-core" }
+serde_json = "1"
+serde = { version = "1", features = ["derive"] }
+
+[dev-dependencies]
+tempfile = "3"

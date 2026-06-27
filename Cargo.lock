@@ -2005,24 +2005,34 @@ checksum = "112b39cec0b298b6c1999fee3e31427f74f676e4cb9879ed1a121b43661a4154"
 
 [[package]]
 name = "markplus"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "clap",
  "markplus_core",
+ "markplus_include",
  "markplus_render",
 ]
 
 [[package]]
 name = "markplus_core"
 version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b9f8eb18def2c255977ad893f0edac7eef7c33c4aa3504a3cfbfc78112924293"
 dependencies = [
+ "csv",
  "pulldown-cmark",
  "serde",
  "serde_json",
  "serde_yml",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "markplus_include"
+version = "0.1.0"
+dependencies = [
+ "markplus_core",
+ "serde",
+ "serde_json",
+ "tempfile",
 ]
 
 [[package]]

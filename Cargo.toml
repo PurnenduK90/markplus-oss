@@ -1,15 +1,19 @@
+[workspace]
+members = ["markplus_include"]
+
 [package]
 name = "markplus"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
-description = "Community CLI for MarkPlus - Everything MarkPlus has to offer"
-license = "MIT OR Apache-2.0"
+authors = ["Purnendu Kumar <purnendu@kumargaur.com>"]
+description = "MarkPlus Community Edition - facade library and CLI bundling markplus_core and markplus_render"
+license = "Apache-2.0"
 repository = "https://github.com/markplus/markplus-oss"
 homepage = "https://github.com/markplus/markplus-oss"
-documentation = "https://docs.rs/markplus-oss"
+documentation = "https://docs.rs/markplus"
 readme = "README.md"
-keywords = ["markdown", "cli", "markplus", "parser", "ast"]
-categories = ["command-line-utilities", "text-processing"]
+keywords = ["markdown", "cli", "markplus", "renderer", "ast"]
+categories = ["command-line-utilities", "text-processing", "rendering"]
 
 [features]
 default = ["cli"]
@@ -17,10 +21,14 @@ cli = ["dep:clap"]
 
 [dependencies]
 clap = { version = "4", features = ["derive"], optional = true }
-markplus_core = "1.0.0"
+markplus_core = { path = "../markplus-core" }
+markplus_include = { path = "markplus_include" }
 markplus_render = "0.1.0"
 
 [[bin]]
 name = "markplus-oss"
 path = "src/main.rs"
 required-features = ["cli"]
+
+[patch.crates-io]
+markplus_core = { path = "../markplus-core" }
